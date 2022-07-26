@@ -1,23 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import MainCart from './Components/MainCart';
+import Navb from './Components/Navb';
+import Cart from './Redux/Cart';
+import Forms from './User/Forms';
+import Signup from './User/Signup';
 
 function App() {
+
+  const { isLogin } = useSelector(state => state.auth)
+  function LoggedIn() {
+    if (isLogin)
+      return (
+        <>
+          <Navb />
+          <Routes>
+            <Route path='/' element={<MainCart />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/cart' element={<Cart />} />
+          </Routes>
+        </>
+      )
+    else
+      return (
+        <Routes>
+          <Route path='/' element={<Forms />} />
+        </Routes>
+      )
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        {
+          LoggedIn()
+        }
+      </BrowserRouter>
     </div>
   );
 }
