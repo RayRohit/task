@@ -9,7 +9,9 @@ import Signup from './User/Signup';
 
 function App() {
 
+
   const { isLogin } = useSelector(state => state.auth)
+  console.log(isLogin);
   function LoggedIn() {
     if (isLogin)
       return (
@@ -17,7 +19,6 @@ function App() {
           <Navb />
           <Routes>
             <Route path='/' element={<MainCart />} />
-            <Route path='/signup' element={<Signup />} />
             <Route path='/cart' element={<Cart />} />
           </Routes>
         </>
@@ -26,6 +27,7 @@ function App() {
       return (
         <Routes>
           <Route path='/' element={<Forms />} />
+          <Route path='/signup' element={<Signup />} />
         </Routes>
       )
   }
