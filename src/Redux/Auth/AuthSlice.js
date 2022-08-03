@@ -6,15 +6,15 @@ import axios from "axios";
 const initialState = {
     isLogin: false,
     error: '',
-    users:[],
-    loggedUser:null
+    users: [],
+    loggedUser: null,
+    fname: ''
 }
 
-export const LogCheck = createAsyncThunk('login/LogCheck', (people)=>{
-    console.log();
+export const LogCheck = createAsyncThunk('login/LogCheck', () => {
     try {
-        const url = 'http://localhost:3000/Users' 
-        return axios.get(url).then((res)=>res.data).catch((err)=>err)
+        const url = 'http://localhost:3000/Users'
+        return axios.get(url).then((res) => res.data).catch((err) => err)
     } catch (err) {
         return console.log(err);
     }
@@ -26,26 +26,27 @@ export const AuthSlice = createSlice({
     initialState,
     reducers: {
         login(state, action) {
-            const user = state.users.find((user) => user.email===action.payload.email && user.pass === action.payload.pass)
+            const user = state.users.find((user) => user.email === action.payload.email && user.pass === action.payload.pass)
             state.loggedUser = user
-            if(user === undefined){
+            if (user === undefined) {
                 state.error = "invalid Credentials"
             }
-            else{
+            else {
                 state.isLogin = true
+                state.fname = user.fname
             }
         },
         logout(state, action) {
             state.isLogin = action.payload
         }
     },
-    extraReducers:{
-        [LogCheck.pending] :(state) => {
-            state.isLogin=false
+    extraReducers: {
+        [LogCheck.pending]: (state) => {
+            state.isLogin = false
         },
-        [LogCheck.fulfilled]:(state,action)=>{
+        [LogCheck.fulfilled]: (state, action) => {
             state.users = action.payload
-            
+
         }
     }
 })
